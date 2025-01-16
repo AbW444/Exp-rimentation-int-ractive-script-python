@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Expérience Immersive</title>
+  <title>EXPERIMENTATION IMMERSIVE 02</title>
   <style>
-    body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; background-color: #0e0e0e; }
+    body { margin: 0; overflow: hidden; font-family: 'Roboto', Arial, sans-serif; background-color: #0e0e0e; }
     canvas { display: block; }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script>
     // Initialisation de la scène, caméra et rendu
     const scene = new THREE.Scene();
@@ -22,124 +23,75 @@
     let particles;
     const textureLoader = new THREE.TextureLoader();
 
-    // Charger l'image sous forme de particules
-    function loadImage() {
-      const imagePath = './path/to/your/image.jpg'; // Remplacer par un chemin valide
+    // Fonction de chargement d'image
+    function loadImage(imageIndex) {
+      const imagePath = `./Projet_test_HLS_LMPI/Ressources/test%20${String(imageIndex).padStart(3, '0')}.jpg`;
 
-      textureLoader.load(
-        imagePath,
-        function (texture) {
-          const canvas = document.createElement('canvas');
-          const context = canvas.getContext('2d');
-          const imgWidth = texture.image.width;
-          const imgHeight = texture.image.height;
-          canvas.width = imgWidth;
-          canvas.height = imgHeight;
-          context.drawImage(texture.image, 0, 0, imgWidth, imgHeight);
-          const imgData = context.getImageData(0, 0, imgWidth, imgHeight);
+      textureLoader.load(imagePath, function (texture) {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        const imgWidth = texture.image.width;
+        const imgHeight = texture.image.height;
+        canvas.width = imgWidth;
+        canvas.height = imgHeight;
+        context.drawImage(texture.image, 0, 0, imgWidth, imgHeight);
+        const imgData = context.getImageData(0, 0, imgWidth, imgHeight);
 
-          const particleGeometry = new THREE.BufferGeometry();
-          const particleMaterial = new THREE.PointsMaterial({
-            size: 0.02,
-            vertexColors: true,
-          });
+        const particleGeometry = new THREE.BufferGeometry();
+        const particleMaterial = new THREE.PointsMaterial({
+          size: 0.02,
+          vertexColors: true,
+        });
 
-          const particleVertices = [];
-          const particleColors = [];
-          const centerX = imgWidth / 2;
-          const centerY = imgHeight / 2;
+        const particleVertices = [];
+        const particleColors = [];
 
-          for (let y = 0; y < imgHeight; y++) {
-            for (let x = 0; x < imgWidth; x++) {
-              const i = (y * imgWidth + x) * 4;
-              const r = imgData.data[i] / 255;
-              const g = imgData.data[i + 1] / 255;
-              const b = imgData.data[i + 2] / 255;
-              const a = imgData.data[i + 3] / 255;
+        const centerX = imgWidth / 2;
+        const centerY = imgHeight / 2;
 
-              if (a > 0.5) {
-                const posX = (x - centerX) / 50;
-                const posY = (y - centerY) / 50;
-                const posZ = (Math.random() - 0.5) * 10;
+        for (let y = 0; y < imgHeight; y++) {
+          for (let x = 0; x < imgWidth; x++) {
+            const i = (y * imgWidth + x) * 4;
+            const r = imgData.data[i] / 255;
+            const g = imgData.data[i + 1] / 255;
+            const b = imgData.data[i + 2] / 255;
+            const a = imgData.data[i + 3] / 255;
 
-                particleVertices.push(posX, posY, posZ);
-                particleColors.push(r, g, b);
-              }
+            if (a > 0.5 && !(r === 0 && g === 0 && b === 0)) {
+              const posX = (x - centerX) / 50;
+              const posY = (y - centerY) / 50;
+              const posZ = (Math.random() - 0.5) * 30;
+              particleVertices.push(posX, posY, posZ);
+              particleColors.push(r, g, b);
             }
           }
-
-          particleGeometry.setAttribute('position', new THREE.Float32BufferAttribute(particleVertices, 3));
-          particleGeometry.setAttribute('color', new THREE.Float32BufferAttribute(particleColors, 3));
-
-          if (particles) {
-            scene.remove(particles);
-          }
-
-          particles = new THREE.Points(particleGeometry, particleMaterial);
-          scene.add(particles);
-        },
-        undefined,
-        function (error) {
-          console.error('Erreur lors du chargement de l\'image:', error);
-          createFallbackParticles(); // Créer des particules par défaut en cas d'échec
         }
-      );
-    }
 
-    function createFallbackParticles() {
-      const particleGeometry = new THREE.BufferGeometry();
-      const particleMaterial = new THREE.PointsMaterial({
-        size: 0.02,
-        color: 0xffffff,
+        particleGeometry.setAttribute('position', new THREE.Float32BufferAttribute(particleVertices, 3));
+        particleGeometry.setAttribute('color', new THREE.Float32BufferAttribute(particleColors, 3));
+
+        if (particles) {
+          scene.remove(particles);
+        }
+
+        particles = new THREE.Points(particleGeometry, particleMaterial);
+        particles.rotation.x = Math.PI;
+        scene.add(particles);
       });
-
-      const particleVertices = [];
-      for (let i = 0; i < 1000; i++) {
-        particleVertices.push((Math.random() - 0.5) * 10);
-        particleVertices.push((Math.random() - 0.5) * 10);
-        particleVertices.push((Math.random() - 0.5) * 10);
-      }
-
-      particleGeometry.setAttribute('position', new THREE.Float32BufferAttribute(particleVertices, 3));
-
-      if (particles) {
-        scene.remove(particles);
-      }
-
-      particles = new THREE.Points(particleGeometry, particleMaterial);
-      scene.add(particles);
     }
 
-    // Charger l'image
-    loadImage();
+    // Charger l'image initiale
+    loadImage(0);
 
     // Position initiale de la caméra
     camera.position.set(0, 0, 5);
+    camera.lookAt(0, 0, 0);
 
-    // Animation progressive
-    let timeElapsed = 0;
-    const totalCycleTime = 900; // 15 minutes en secondes
-
+    // Animation
     function animate() {
       requestAnimationFrame(animate);
       renderer.render(scene, camera);
-
-      if (particles) {
-        const positions = particles.geometry.attributes.position.array;
-        const progress = (timeElapsed % totalCycleTime) / totalCycleTime;
-        const isFadingOut = progress < 0.5;
-        const fadeFactor = isFadingOut ? progress * 2 : (1 - progress) * 2;
-
-        for (let i = 0; i < positions.length; i += 3) {
-          positions[i + 2] *= fadeFactor;
-        }
-
-        particles.geometry.attributes.position.needsUpdate = true;
-      }
-
-      timeElapsed += 0.016; // Approximation pour 1 frame (16ms)
     }
-
     animate();
 
     // Gestion du redimensionnement
