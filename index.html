@@ -73,24 +73,6 @@
       text-shadow: 0px 0px 30px rgba(255, 0, 0, 1); /* Lueur rouge accentuée */
     }
   </style>
-  </head>
-<body>
-  <div id="intro-overlay">Titre d'accueil</div>
-  <button id="arrow-button">&gt;&gt;</button>
-  <button id="title-button" onclick="location.reload();">Rafraîchir</button>
-
-  <script>
-    const arrowButton = document.getElementById('arrow-button');
-    const titleButton = document.getElementById('title-button');
-    const introOverlay = document.getElementById('intro-overlay');
-
-    arrowButton.addEventListener('click', () => {
-      introOverlay.style.display = 'none';
-      arrowButton.style.display = 'none';
-      titleButton.style.display = 'block';
-    });
-  </script>
-</body>
 
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
