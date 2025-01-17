@@ -17,129 +17,80 @@
       display: block;
     }
 
-    #ui-overlay {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: row;
-      gap: 10px;
-      background: rgba(0, 0, 0, 0.9); /* Fond noir opaque */
-      padding: 10px;
-      border-radius: 10px;
-      box-shadow: 0px 0px 15px rgba(255, 0, 0, 0.7); /* Lueur rouge */
-      display: none;
-    }
-
-    #ui-overlay button {
-      background-color: #000000; /* Fond noir */
-      color: #FF0000; /* Texte rouge */
-      border: 1px solid #FF0000; /* Bordure rouge */
-      padding: 15px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 5px;
-      font-weight: bold;
-      transition: background-color 0.3s, box-shadow 0.3s;
-      box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.5); /* Lueur rouge */
-    }
-
-    #ui-overlay button:hover {
-      background-color: rgba(255, 0, 0, 0.3);
-      box-shadow: 0px 0px 20px rgba(255, 0, 0, 0.8);
-    }
-
-    @media (max-width: 768px) {
-      #ui-overlay button {
-        padding: 10px 15px;
-        font-size: 14px;
-      }
-    }
-
-    .arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 50px;
-      height: 50px;
-      background-color: rgba(0, 0, 0, 0.9); /* Fond noir opaque */
-      color: #FF0000; /* Texte rouge */
-      border: 2px solid #FF0000; /* Bordure rouge */
-      cursor: pointer;
-      font-size: 30px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      box-shadow: 0px 0px 15px rgba(255, 0, 0, 0.7);
-      z-index: 10;
-      transition: background-color 0.3s, box-shadow 0.3s;
-      display: none;
-    }
-
-    .arrow:hover {
-      background-color: rgba(255, 0, 0, 0.3);
-      box-shadow: 0px 0px 20px rgba(255, 0, 0, 0.8);
-    }
-
-    #arrow-left { left: 10px; }
-    #arrow-right { right: 10px; }
-
     #intro-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: url('path/to/your/image.png'); /* Image de fond */
       display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      color: #FF0000; /* Texte rouge */
+      color: #000000; /* Texte noir */
       font-size: 216px;
       font-weight: 900; /* Titre épais */
       text-shadow: 0px 0px 20px rgba(255, 0, 0, 0.8); /* Lueur rouge */
       z-index: 20;
     }
 
-    #startButton {
+    #arrow-button {
       position: absolute;
       top: 50%;
-      left: calc(50% + 280px); /* Ajuster la position */
-      transform: translateY(-50%);
-      background-color: #000000; /* Fond noir */
-      color: #FF0000; /* Texte rouge */
-      border: 2px solid #FF0000; /* Bordure rouge */
-      font-size: 216px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: none;
+      color: #000000; /* Texte noir */
+      font-size: 72px;
+      font-weight: bold;
+      border: none;
       cursor: pointer;
-      font-weight: 900; /* Titre épais */
-      box-shadow: 0px 0px 20px rgba(255, 0, 0, 0.8); /* Lueur rouge */
-      transition: color 0.3s, background-color 0.3s;
+      text-shadow: 0px 0px 15px rgba(255, 0, 0, 0.8); /* Lueur rouge */
+      transition: text-shadow 0.3s;
     }
 
-    #startButton:hover {
-      background-color: rgba(255, 0, 0, 0.3);
+    #arrow-button:hover {
+      text-shadow: 0px 0px 30px rgba(255, 0, 0, 1); /* Lueur rouge accentuée */
     }
 
-    #page-title {
+    #title-button {
       position: absolute;
       top: 10px;
       left: 50%;
       transform: translateX(-50%);
       color: #000000; /* Texte noir */
-      background-color: #FF0000; /* Fond rouge */
-      font-size: 36px;
+      font-size: 24px;
       font-weight: bold;
-      z-index: 15;
-      padding: 10px 20px;
-      border-radius: 5px;
-      text-align: center;
-      box-shadow: 0px 0px 20px rgba(255, 0, 0, 0.8); /* Lueur rouge */
+      text-shadow: 0px 0px 15px rgba(255, 0, 0, 0.8); /* Lueur rouge */
+      border: none;
+      background: none;
+      cursor: pointer;
+      display: none; /* Caché au début */
+      transition: text-shadow 0.3s;
+    }
+
+    #title-button:hover {
+      text-shadow: 0px 0px 30px rgba(255, 0, 0, 1); /* Lueur rouge accentuée */
     }
   </style>
+  </head>
+<body>
+  <div id="intro-overlay">Titre d'accueil</div>
+  <button id="arrow-button">&gt;&gt;</button>
+  <button id="title-button" onclick="location.reload();">Rafraîchir</button>
+
+  <script>
+    const arrowButton = document.getElementById('arrow-button');
+    const titleButton = document.getElementById('title-button');
+    const introOverlay = document.getElementById('intro-overlay');
+
+    arrowButton.addEventListener('click', () => {
+      introOverlay.style.display = 'none';
+      arrowButton.style.display = 'none';
+      titleButton.style.display = 'block';
+    });
+  </script>
+</body>
 
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
